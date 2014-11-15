@@ -8,7 +8,8 @@ unzip -o $compiler.zip -d $compiler
 
 echo
 echo "Get scriptaculous..."
-scriptaculous="scriptaculous-js-1.9.0"
+scriptaculous_ver="1.9.0"
+scriptaculous="scriptaculous-js-$scriptaculous_ver"
 curl -sO http://script.aculo.us/dist/$scriptaculous.zip
 unzip -o $scriptaculous.zip
 
@@ -23,9 +24,11 @@ echo "Replace scriptaculous's functions to selectively load dependent scripts...
 perl -i.bak -pe 'BEGIN{undef $/;} s/require:.*REQUIRED_PROTOTYPE:/REQUIRED_PROTOTYPE:/gsm' $scriptaculous/src/scriptaculous.js
 perl -i.bak.2 -pe 'BEGIN{undef $/;} s/\n    var js = .*    }\);//gsm' $scriptaculous/src/scriptaculous.js
 
+protoaculous_ver="$scriptaculous_ver-$prototype_ver"
+
 echo
-echo "Generate protoaculous.$prototype_ver.js and protoaculous.$prototype_ver.min.js in dist..."
-cat prototypejs/prototype.$prototype_ver.js $scriptaculous/src/scriptaculous.js $scriptaculous/src/builder.js $scriptaculous/src/effects.js $scriptaculous/src/dragdrop.js $scriptaculous/src/controls.js $scriptaculous/src/slider.js $scriptaculous/src/sound.js > dist/protoaculous.$prototype_ver.js
-java -jar compiler-latest/compiler.jar --js_output_file=dist/protoaculous.$prototype_ver.min.js dist/protoaculous.$prototype_ver.js
+echo "Generate protoaculous.$protoaculous_ver.js and protoaculous.$protoaculous_ver.min.js in dist..."
+cat prototypejs/prototype.$prototype_ver.js $scriptaculous/src/scriptaculous.js $scriptaculous/src/builder.js $scriptaculous/src/effects.js $scriptaculous/src/dragdrop.js $scriptaculous/src/controls.js $scriptaculous/src/slider.js $scriptaculous/src/sound.js > dist/protoaculous.$protoaculous_ver.js
+java -jar compiler-latest/compiler.jar --js_output_file=dist/protoaculous.$protoaculous_ver.min.js dist/protoaculous.$protoaculous_ver.js
 
 ls -al dist/
